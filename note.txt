@@ -1,0 +1,27 @@
+1. Tạo project, cài đặt fastapi
+python3 -m venv fastapi-env
+source fastapi-env/bin/activate
+pip3 install fastapi
+pip3 install 'fastapi[all]'
+create main.py
+run: uvicorn main:app --reload
+
+2. Path parameter:
+- Nhắc đến có nhiều dynamic path kiểu như @app.get('/blog/{id}')
++ trong path chứa biến, biến này được truyền vào hàm xử lý cần khai báo kiểu dữ liệu cho nó (nếu không mặc định: str)
+kiểu như:
+@app.get('/blog/{id}')
+def show(id: int):
+    ...
++ thêm nữa: dynamic router cần được khai báo phía dưới cùng file, tránh để không ảnh hưởng đến static router giống phần đầu path
+
+3. Query parameter:
+- Nhắc đến khi get all 1tr bản ghi thì ko nên => cần các tham số query: limit
+Kiểu như:
+@app.get('/blog')
+def index(limit=10, published: bool = false):
++ các tham số này cần gắn mặc định, tránh warning thiếu tham số
+
+4. Request body
+- Thêm body vào request khi tạo mới chẳng hạn.
+- Để thực hiện request body => Sử dụng Pydantic models với các hỗ trợ của nó.

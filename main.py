@@ -3,9 +3,14 @@ from fastapi import FastAPI
 app = FastAPI()
 
 
-@app.get('/')
-def index():
-    return {'data': 'list blogs'}
+# problem when you get list blogs about 1 million items
+@app.get('/blog')
+def index(limit=10, published: bool = false):
+    # only get 10 published blogs
+    if published:
+        return {'data': f'{limit} published blogs from the db'}
+    else:
+        return {'data': f'{limit} blogs from the db'}
 
 
 # static router need write above dynamic router
