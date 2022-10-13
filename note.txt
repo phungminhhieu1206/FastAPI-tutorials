@@ -54,3 +54,7 @@ II. Intermediate concepts
 1. Debugging
 - Tạo debug point trong vsc, khi ứng dụng chạy sẽ dừng lại tại những điểm đó và show ra hết thông tin tại điểm đó
 - Command + Shift + P: type "debug:restart", choose: "FastAPI" (Cần tắt các app server đang chạy trước debug)
+
+2. Pydantic schemas
+- Nhắc đến việc, khi cần truyền một số biến nào đấy vào query url (dạng request body). Nếu khai báo class thông thường sẽ dẫn đến lỗi pydantic not map type
+- Do vậy cần định nghĩa model kế thừa từ BaseModel của pydantic, viết dưới dạng schemas
