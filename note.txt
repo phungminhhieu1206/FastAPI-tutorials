@@ -1,3 +1,22 @@
+0. Python class
+- Tất cả các class đều có hàm __init__(), chạy khi class đang được khởi tạo. Dùng để gán giá trị cho đối tượng hoặc xử lý khi class khởi tạo. Ví dụ:
+class Person:
+  def __init__(self, name, age):
+    self.name = name
+    self.age = age
+
+p1 = Person("John", 36)
+
+- seft (hoặc tên khác tuỳ ý): tham chiếu đến instance hiện tại của class, cho phép truy cập các biến thuộc class.
+    + seft: bắt buộc phải là tham số đầu tiên của 1 phương thức trong class !
+=> Chốt: Tham số đầu tiên trong method là tham chiếu đến instance của class đó !!!
+
+- Kế thừa: Lớp Student kế thừa từ lớp Person
+class Student(Person):
+  pass
+    
+    + Sử dụng super() thay cho tên lớp cha, tự động kế thừa các phương thức, thuộc tính của lớp cha đó.
+
 1. Tạo project, cài đặt fastapi
 python3 -m venv fastapi-env
 source fastapi-env/bin/activate
@@ -23,5 +42,8 @@ def index(limit=10, published: bool = false):
 + các tham số này cần gắn mặc định, tránh warning thiếu tham số
 
 4. Request body
-- Thêm body vào request khi tạo mới chẳng hạn.
+- Thêm body vào request url
 - Để thực hiện request body => Sử dụng Pydantic models với các hỗ trợ của nó.
+- Tag Optional cho phép trường không bắt buộc 
+
+5. Debugging 

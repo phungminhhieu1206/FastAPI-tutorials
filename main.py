@@ -1,11 +1,13 @@
 from fastapi import FastAPI
+from pydantic import BaseModel
+from typing import Optional
 
 app = FastAPI()
 
 
 # problem when you get list blogs about 1 million items
 @app.get('/blog')
-def index(limit=10, published: bool = false):
+def index(limit=10, published: bool = False):
     # only get 10 published blogs
     if published:
         return {'data': f'{limit} published blogs from the db'}
@@ -33,3 +35,14 @@ def comments(id: int):
         'blog_id': id,
         'comments': 'list comments'
     }}
+
+
+class Blog(BaseModel):
+    title: str
+    body: str
+    published: Optional[bool]
+
+
+@app.post('/blog/create')
+def create_blog(blog: Blog):
+    return 'done'
