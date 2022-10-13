@@ -17,16 +17,19 @@ class Student(Person):
     
     + Sử dụng super() thay cho tên lớp cha, tự động kế thừa các phương thức, thuộc tính của lớp cha đó.
 
+------------------------------------------------------------------------------------------------------
+I. Basic Concepts:
+
 1. Tạo project, cài đặt fastapi
 python3 -m venv fastapi-env
 source fastapi-env/bin/activate
 pip3 install fastapi
 pip3 install 'fastapi[all]'
-create main.py
+create main.py (khai báo FastAPI, và 1 instance app = FastAPI(), tạo api get đầu tiên và build trên swaggerUI bằng uvicorn)
 run: uvicorn main:app --reload
 
 2. Path parameter:
-- Nhắc đến có nhiều dynamic path kiểu như @app.get('/blog/{id}')
+- Nhắc đến có nhiều dynamic path kiểu như @app.get('/blog/{id}') - nó là biến trên url, như: số trang trên url để phần trang
 + trong path chứa biến, biến này được truyền vào hàm xử lý cần khai báo kiểu dữ liệu cho nó (nếu không mặc định: str)
 kiểu như:
 @app.get('/blog/{id}')
@@ -39,11 +42,15 @@ def show(id: int):
 Kiểu như:
 @app.get('/blog')
 def index(limit=10, published: bool = false):
-+ các tham số này cần gắn mặc định, tránh warning thiếu tham số
++ các tham số này cần gắn mặc định, tránh warning thiếu tham số khi trên url không truyền limit chẳng hạn
 
 4. Request body
 - Thêm body vào request url
-- Để thực hiện request body => Sử dụng Pydantic models với các hỗ trợ của nó.
+- Để thực hiện request body => Sử dụng Pydantic models với các hỗ trợ của nó. (Ví dụ: BaseModel)
 - Tag Optional cho phép trường không bắt buộc 
 
-5. Debugging 
+------------------------------------------------------------------------------------------------------
+II. Intermediate concepts
+1. Debugging
+- Tạo debug point trong vsc, khi ứng dụng chạy sẽ dừng lại tại những điểm đó và show ra hết thông tin tại điểm đó
+- Command + Shift + P: type "debug:restart", choose: "FastAPI" (Cần tắt các app server đang chạy trước debug)
