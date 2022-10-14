@@ -58,3 +58,7 @@ II. Intermediate concepts
 2. Pydantic schemas
 - Nhắc đến việc, khi cần truyền một số biến nào đấy vào query url (dạng request body). Nếu khai báo class thông thường sẽ dẫn đến lỗi pydantic not map type
 - Do vậy cần định nghĩa model kế thừa từ BaseModel của pydantic, viết dưới dạng schemas
+
+
+3. Response Body
+- Nói đến việc định nghĩa các trường trả về, không muốn trả về những trường key, password. Làm thế nào?

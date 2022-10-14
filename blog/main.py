@@ -3,6 +3,7 @@ from . import schemas
 from . import models
 from .database import engine, SessionLocal
 from sqlalchemy.orm import Session
+from typing import List, Dict
 
 
 app = FastAPI()
@@ -29,21 +30,21 @@ def create(request: schemas.Blog, db: Session = Depends(get_db)):
 
 
 # GET_ALL
-@app.get('/blogs')
-def get_all(db: Session = Depends(get_db)):
+# Do ở đây .all() nên response_model là dạng List objects
+@app.get('/blogs', status_code=status.HTTP_200_OK, response_model=List[schemas.ShowBlog])
+async def get_all(db: Session = Depends(get_db)):
     blogs = db.query(models.Blog).all()
     return blogs
 
 
 # GET BY ID
-@app.get('/blogs/{id}', status_code=status.HTTP_200_OK)
-def get_by_id(id, response: Response, db: Session = Depends(get_db)):
-    blogs = db.query(models.Blog).filter(models.Blog.id == id).all()
+# Ở đây .first() nên response_model là dạng 1 object
+@app.get('/blogs/{id}', status_code=status.HTTP_200_OK, response_model=schemas.ShowBlog)
+async def get_by_id(id, db: Session = Depends(get_db)):
+    blogs = db.query(models.Blog).filter(models.Blog.id == id).first()
     if not blogs:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f'Blog with the id {id} is not available')
-        # response.status_code = status.HTTP_404_NOT_FOUND
-        # return {'detail-error': f'Blog with the id {id} is not available'}
     else:
         return blogs
 
@@ -57,8 +58,8 @@ def delete(id, db: Session = Depends(get_db)):
                             detail=f'Not records with id {id} in database')
 
     blog.delete(synchronize_session=False)
-    db.commit() #commit that transaction
-    return {'status': 'delete done'} #return response
+    db.commit()  # commit that transaction
+    return {'status': 'delete done'}  # return response
 
 
 # UPDATE
