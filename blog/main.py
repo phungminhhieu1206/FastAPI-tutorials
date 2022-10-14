@@ -1,9 +1,9 @@
 from fastapi import FastAPI, Depends, status, Response, HTTPException
-from . import schemas
-from . import models
+from . import schemas, models
 from .database import engine, SessionLocal
 from sqlalchemy.orm import Session
 from typing import List, Dict
+from .hashing import Hash
 
 
 app = FastAPI()
@@ -76,12 +76,25 @@ def update(id, request: schemas.Blog, db: Session = Depends(get_db)):
     return {'status': 'update done'}
 
 
-# USER
-@app.post('/user')
+# CREATE USER
+@app.post('/user', response_model=schemas.ShowUser)
 def create_user(request: schemas.User, db: Session = Depends(get_db)):
+    hashedPassword = Hash.bcrypt(request.password)
     new_user = models.User(
-        name=request.name, email=request.email, password=request.password)
+        name=request.name, email=request.email, password=hashedPassword)
     db.add(new_user)
     db.commit()
     db.refresh(new_user)
     return new_user
+
+# GET USER
+
+
+@app.get('/user/{id}', status_code=status.HTTP_200_OK, response_model=schemas.ShowUser, )
+def get_user(id: int, db: Session = Depends(get_db)):
+    user = db.query(models.User).filter(models.User.id == id).first()
+    if not user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f'User with the id {id} is not available')
+
+    return user
